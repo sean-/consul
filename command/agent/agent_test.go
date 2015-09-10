@@ -1130,7 +1130,7 @@ func TestAgent_ServiceMaintenanceMode(t *testing.T) {
 	}
 
 	// Enter maintenance mode for the service
-	if err := agent.EnableServiceMaintenance("redis", "broken"); err != nil {
+	if err := agent.EnableServiceMaintenance("redis", "broken", ""); err != nil {
 		t.Fatalf("err: %s", err)
 	}
 
@@ -1157,7 +1157,7 @@ func TestAgent_ServiceMaintenanceMode(t *testing.T) {
 	}
 
 	// Enter service maintenance mode without providing a reason
-	if err := agent.EnableServiceMaintenance("redis", ""); err != nil {
+	if err := agent.EnableServiceMaintenance("redis", "", ""); err != nil {
 		t.Fatalf("err: %s", err)
 	}
 
@@ -1222,7 +1222,7 @@ func TestAgent_NodeMaintenanceMode(t *testing.T) {
 	defer agent.Shutdown()
 
 	// Enter maintenance mode for the node
-	agent.EnableNodeMaintenance("broken")
+	agent.EnableNodeMaintenance("broken", "")
 
 	// Make sure the critical health check was added
 	check, ok := agent.state.Checks()[nodeMaintCheckID]
@@ -1244,7 +1244,7 @@ func TestAgent_NodeMaintenanceMode(t *testing.T) {
 	}
 
 	// Enter maintenance mode without passing a reason
-	agent.EnableNodeMaintenance("")
+	agent.EnableNodeMaintenance("", "")
 
 	// Make sure the check was registered with the default note
 	check, ok = agent.state.Checks()[nodeMaintCheckID]
